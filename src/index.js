@@ -4,24 +4,26 @@ import './index.scss';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import ListQuestion from './components/listQuestion';
+import { ListQuestion } from './components/listQuestion';
 import Intro from './components/intro';
 import Question from './components/question';
+import { Level } from './components/level';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <div className="main-app">
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Intro />} />
-        <Route path="/" element={<App />}>
-          <Route path="questions" element={<ListQuestion />} />
-          <Route path=":questionId" element={<Question />} />
-        </Route>
-        <Route path="*" element={<p>Path not resolved</p>} />
-      </Routes>
-    </BrowserRouter>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Intro />} />
+          <Route path="/" element={<App />}>
+            <Route path="/level" element={<Level />} />
+            <Route path=":level" element={<ListQuestion />} />
+            <Route path="/question/:questionId" element={<Question />} />
+          </Route>
+          <Route path="*" element={<p>Path not resolved</p>} />
+        </Routes>
+      </BrowserRouter>
     </div>
   </React.StrictMode >
 );

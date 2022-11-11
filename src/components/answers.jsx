@@ -1,5 +1,7 @@
 import { useState } from 'react';
-import { findById } from "../data/data";
+import { saveCheck, isCheck } from '../util/questionListUtil';
+import { addPoint } from '../util/scoreUtil';
+import { findById } from '../util/listUtil';
 
 /**
  * La liste de réponses
@@ -49,9 +51,9 @@ export const Answers = (prop) => {
     )
 
     if (isQuestionInList(question.key + 1)) {
-      content.push(<button className='btn btn-outline-dark col-4 mt-3 btn-res'><a href={"/" + (question.key + 1)}> Suivant </a></button>)
+      content.push(<button className='btn btn-outline-dark col-4 mt-3 btn-res'><a href={"/question/" + (question.key + 1)}> Suivant </a></button>)
     } else {
-      content.push(<button className='btn btn-outline-dark col-4 mt-3 btn-res'><a href={"/questions"}> Terminé </a></button>)
+      content.push(<button className='btn btn-outline-dark col-4 mt-3 btn-res'><a href={"/level"}> Terminé </a></button>)
     }
     return content;
   }
@@ -83,9 +85,9 @@ export const Answers = (prop) => {
     )
 
     if (isQuestionInList(question.key + 1)) {
-      content.push(<button className='btn btn-outline-dark col-4 mt-3 btn-res'><a href={"/" + (question.key + 1)}> Suivant </a></button>)
+      content.push(<button className='btn btn-outline-dark col-4 mt-3 btn-res'><a href={"/question/" + (question.key + 1)}> Suivant </a></button>)
     } else {
-      content.push(<button className='btn btn-outline-dark col-4 mt-3 btn-res'><a href={"/questions"}> Terminé </a></button>)
+      content.push(<button className='btn btn-outline-dark col-4 mt-3 btn-res'><a href={"/level"}> Terminé </a></button>)
     }
     return content;
   }
@@ -99,24 +101,9 @@ export const Answers = (prop) => {
     setAnswerResult(res);
     if (res.valid) {
       setSuccess(true);
-      let check = isCheck(question);
-      addPoint(check);
+      addPoint(isCheck(question));
     }
-    saveCheck(question);
-  }
-
-
-  /**
-   * Sauvegarde l'avancée
-   * @param {question} question 
-   */
-  function saveCheck(question) {
-    let store = JSON.parse(sessionStorage.getItem("questionList"))
-    let elem = store[question.key]
-    if (elem) {
-      store[question.key] = { key: elem.key, question: elem.question, check: true }
-      sessionStorage.setItem("questionList", JSON.stringify(store))
-    }
+    saveCheck(question.key);
   }
 
   /**
@@ -127,28 +114,6 @@ export const Answers = (prop) => {
   function isQuestionInList(key) {
     return findById(parseInt(key)) ? true : false;
   }
-
-  /**
-   * Ajoute des points au joueur si il réussi
-   * @param {*} question la question
-   */
-  function addPoint(isCheck) {
-    if (!isCheck) {
-      let score = sessionStorage.getItem("score");
-      sessionStorage.setItem("score", (Number(score) + 10));
-    }
-  }
-
-  /**
-   * Vérifie que la question n'a pas été répondu avant
-   * @param {*} question la question
-   * @returns vrai si la réponse à déjà été répondu
-   */
-  function isCheck(question) {
-    let store = JSON.parse(sessionStorage.getItem("questionList"))
-    return store[question.key] ? store[question.key].check : false;
-  }
-
 
   /**
    * Affiche les réponses 

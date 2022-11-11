@@ -28,12 +28,19 @@ a {
   text-decoration: none;
 }
 
+a.disabled {
+  pointer-events: none;
+  cursor: default;
+  color: grey !important;
+  border-color: grey !important;
+}
+
 img {
   width: 100%;
 }
 
 .main {
-  width: inherit;
+  // width: inherit;
   height: inherit;
 }
 

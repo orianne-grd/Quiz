@@ -1,55 +1,56 @@
-import { list } from "../data/data";
+// import { list } from "../data/data";
+import { useParams } from "react-router-dom";
+import { getQuestionListJson, setList } from "../util/questionListUtil";
+import { getScore } from "../util/scoreUtil";
+import { getListByLevel } from "../util/listUtil";
+import { setLevel } from "../util/levelUtil";
 
-/**
- * Retourne la liste de question du quiz
- * Sauvegarde en session les questions et leurs avancées 
- * Sauvegarde en session le score du joueur
- */
-function getQuestions() {
-  let content = [];
 
-  let sessionStore = sessionStorage.getItem("questionList") ?
-    JSON.parse(sessionStorage.getItem("questionList")) : null;
+export const ListQuestion = () => {
+  let params = useParams();
+  let level = params.level;
+  setLevel(level);
 
-  if (sessionStore === null) {
-    sessionStore = []
-    for (let l of list) {
-      l.key === 1 ?
-        sessionStore.push({ key: l.key, question: l.question, check: true }) :
-        sessionStore.push({ key: l.key, question: l.question, check: false })
+  let list = getListByLevel(level);
+
+  let score = getScore();
+
+  /**
+   * Retourne la liste de question du quiz
+   * Sauvegarde en session les questions et leurs avancées 
+   */
+  function getQuestions(list) {
+    let content = [];
+
+    let listQuestion = getQuestionListJson(level);
+
+    // save in store
+    if (listQuestion === null) {
+      listQuestion = setList(list, level);
     }
+
+    for (let question of listQuestion) {
+      question.check ?
+        content.push(<p className="col-8 btn btn-outline-secondary check">
+          <a href={"/question/" + question.key}>Question {question.key}</a>
+        </p>)
+        :
+        content.push(<p className="col-8 btn btn-outline-secondary disable-links">
+          <a href={"/question/" + question.key}>Question {question.key}</a>
+        </p>)
+    }
+
+    return content
   }
 
-  for (let question of sessionStore) {
-    question.check ?
-      content.push(<p className="col-8 btn btn-outline-secondary check">
-        <a href={"/" + question.key}>Question {question.key}</a>
-      </p>)
-      :
-      content.push(<p className="col-8 btn btn-outline-secondary disable-links">
-        <a href={"/" + question.key}>Question {question.key}</a>
-      </p>)
-  }
-
-  sessionStorage.setItem("questionList", JSON.stringify(sessionStore));
-  return content
-}
-
-/**
- * Retourne l'affichage du composant
- */
-function ListQuestion() {
-  
-  let score = sessionStorage.getItem("score");
-
+  /**
+   * Retourne l'affichage du composant
+   */
   return (
     <div className="list-questions">
       <h1>Liste des questions</h1>
       <p className="score">Score : {score}</p>
-      {getQuestions()}
+      {getQuestions(list)}
     </div>
   );
 }
-
-export default ListQuestion;
-

@@ -1,7 +1,9 @@
-import { findById } from "../data/data";
+// import { findById } from "../data/data";
 import { useParams } from "react-router-dom";
 import { Answers } from "./answers";
-import { Image } from "../img/image.js"
+import { Image } from "../util/imageUtil.js"
+import { saveCheck } from "../util/questionListUtil";
+import { findById } from "../util/listUtil";
 
 /**
  * Retourne la liste des réponses possible
@@ -20,23 +22,13 @@ function getQuestion(q) {
 }
 
 /**
- * Sauvegarde l'avancée
- * @param {question} question 
- */
-function saveCheck(question) {
-  let store = JSON.parse(sessionStorage.getItem("questionList"))
-  let elem = store[question.key-1]
-  store[question.key-1] = {key: elem.key, question: elem.question, check: true}
-  sessionStorage.setItem("questionList", JSON.stringify(store))
-} 
-
-/**
  * Retourne l'affichage du composant
  */
 function Question() {
   let params = useParams();
   let q = findById(parseInt(params.questionId));
-  saveCheck(q);
+  console.log(q)
+  saveCheck(q.key - 1);
 
   return (
     <div>
