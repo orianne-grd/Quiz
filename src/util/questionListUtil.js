@@ -3,6 +3,10 @@ const questionListItem = "questionList";
 let level = getLevel() ? getLevel() : "easy";
 const questionListLevelItem = questionListItem + "-" + level;
 
+export const passed = "passed";
+export const active = "active";
+export const disable = "disable";
+
 
 export function getQuestionListJson(level) {
   return sessionStorage.getItem(questionListItem + "-" + level) ?
@@ -13,29 +17,33 @@ export function setList(list, level) {
   let sessionStore = []
   list.forEach((elem, index) => {
     if (index === 0) {
-      sessionStore.push({ key: elem.key, check: true });
+      sessionStore.push({ key: elem.key, state: active });
     } else {
-      sessionStore.push({ key: elem.key, check: false }); 
+      sessionStore.push({ key: elem.key, state: disable });
     }
   });
 
-  // for (let l of list) {
-  //   l.key === 1 ?
-  //     sessionStore.push({ key: l.key, check: true }) :
-  //     sessionStore.push({ key: l.key, check: false });
-  // }
   sessionStorage.setItem(questionListItem + "-" + level, JSON.stringify(sessionStore));
   return JSON.stringify(sessionStore);
 }
 
 /**
- * Sauvegarde l'avancée
- * @param {question} question 
+ * Sauvegarde l'état de la question et de la suivante
+ * @param {key} key de la question suivante 
  */
 export function saveCheck(key) {
   let store = JSON.parse(sessionStorage.getItem(questionListLevelItem))
-  let elem = store[key]
-  store[key] = { key: elem.key, check: true } //up check
+
+  if (store[key] !== undefined) {
+    let elem = store[key];
+    store[key] = { key: elem.key, state: active };
+  }
+
+  if (key > 0) {
+    let current = store[key - 1];
+    store[key - 1] = { key: current.key, state: passed };
+  }
+
   sessionStorage.setItem(questionListLevelItem, JSON.stringify(store))
 }
 
@@ -47,6 +55,10 @@ export function saveCheck(key) {
  */
 export function isCheck(question) {
   let store = JSON.parse(sessionStorage.getItem(questionListLevelItem))
-  return store[question.key] ? store[question.key].check : true;
+  return store[question.key-1] ? store[question.key-1].state === passed : true;
 }
 
+export function isNextQuestionDisable(key) {
+  let store = JSON.parse(sessionStorage.getItem(questionListLevelItem))
+  return store[key] ? store[key].state === disable : true;
+}

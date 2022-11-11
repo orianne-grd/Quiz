@@ -1,4 +1,22 @@
-$color: #a095da;
+$orange: #BF4904;
+$light-pink: #F2D1C9;
+
+$dark-green: #2F402C;
+$green: #466748;
+$light-green: #BCBE8C;
+$yellow: #F2D16D;
+$dark-yellow: #D9B13B;
+
+$dark-purple: #30244f;
+$purple: #4D308C;
+$light-purple: #AEAAE7;
+$dark-blue: #33366b;
+$light-blue: #b1c1f5;
+
+$brown: #4C3235;
+$dark: #261714;
+$light: #F2EBC9;
+
 
 body,
 html {
@@ -20,6 +38,21 @@ code {
     monospace;
 }
 
+
+// -------------------------
+// BASICS
+.main {
+  // width: inherit;
+  height: inherit;
+}
+
+.main-app {
+  width: inherit;
+  height: inherit;
+  text-align: center;
+}
+
+
 p {
   margin-top: 20px;
 }
@@ -39,21 +72,46 @@ img {
   width: 100%;
 }
 
-.main {
-  // width: inherit;
-  height: inherit;
+.img-logo {
+  width: 70%;
 }
 
-.main-app {
-  width: inherit;
-  height: inherit;
-  text-align: center;
+
+// -------------------------
+// Colors 
+.easy {
+  color: $light-purple;
 }
 
+.medium {
+  color: $purple;
+}
+
+.hard {
+  color: $dark-purple;
+}
+
+.easy-btn {
+  background-color: $light-purple !important;
+}
+
+.medium-btn {
+  background-color: $purple !important;
+}
+
+.hard-btn {
+  background-color: $dark-purple !important;
+}
+
+
+
+// -------------------------
+// Intro
 .intro {
   padding: 3rem;
   width: inherit;
   height: inherit;
+  position: relative;
 
 
   background-image: url('./img/main.png');
@@ -61,13 +119,28 @@ img {
   background-repeat: no-repeat;
   background-size: cover;
 
+  .logo {
+    filter: brightness(0) invert(1) drop-shadow(0 3px 3px $dark-blue) drop-shadow(0 5px 10px $light-blue);
+  }
+
+  .dropshadow {
+    filter: drop-shadow(0 5px 5px $dark-blue);
+  }
+
   .bg {
     padding: 2rem;
-    background-color: white;
-    border-radius: 2%;
+    background-color: #f8f9fa;
+    border-radius: 0.5rem;
+  }
+
+  .btn-start {
+    display: flex;
+    align-items: flex-end;
   }
 }
 
+// -------------------------
+// Header
 .header {
   padding-bottom: 2rem;
 
@@ -77,12 +150,15 @@ img {
   }
 }
 
+// -------------------------
+// List Question
 .list-questions {
   .score {
     font-size: large;
   }
-  p.check {
-    background-color: $color;
+
+  p.passed {
+    background-color: $light-blue;
 
     a {
       color: white;
@@ -90,7 +166,16 @@ img {
     }
   }
 
-  p.disable-links {
+  .active {
+    background-color: $dark-blue;
+
+    a {
+      color: white;
+      text-decoration: none;
+    }
+  }
+
+  .disable-links {
     pointer-events: none;
 
     a {
@@ -100,14 +185,18 @@ img {
   }
 }
 
+// -------------------------
+// Question
 .question {
-  color: darkslateblue;
+  color: $dark-purple;
 }
 
 .sm-question {
   padding: 0.2rem;
 }
 
+// -------------------------
+// Answers
 .answers {
   .result {
     margin: 10px 0;
@@ -131,7 +220,7 @@ img {
 
   .btn-res {
     a {
-      color : black;
+      color: black;
     }
   }
 }

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { saveCheck, isCheck } from '../util/questionListUtil';
+import { saveCheck, isCheck, isNextQuestionDisable } from '../util/questionListUtil';
 import { addPoint } from '../util/scoreUtil';
 import { findById } from '../util/listUtil';
 
@@ -103,7 +103,7 @@ export const Answers = (prop) => {
       setSuccess(true);
       addPoint(isCheck(question));
     }
-    saveCheck(question.key);
+    if (isNextQuestionDisable(question.key)) saveCheck(question.key);
   }
 
   /**

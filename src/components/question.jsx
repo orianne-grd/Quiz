@@ -2,7 +2,6 @@
 import { useParams } from "react-router-dom";
 import { Answers } from "./answers";
 import { Image } from "../util/imageUtil.js"
-import { saveCheck } from "../util/questionListUtil";
 import { findById } from "../util/listUtil";
 
 /**
@@ -27,12 +26,10 @@ function getQuestion(q) {
 function Question() {
   let params = useParams();
   let q = findById(parseInt(params.questionId));
-  console.log(q)
-  saveCheck(q.key - 1);
 
   return (
     <div>
-      <h1 className="question">Questions</h1>
+      <h1 className="question">Questions {q.key}</h1>
       {getQuestion(q)}
     </div>
   );

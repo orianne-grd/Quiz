@@ -7,3 +7,14 @@ export function getLevel() {
 export function setLevel(level) {
   sessionStorage.setItem(levelItem, level);
 }
+
+export function getLevelTxt(level) {
+  switch (level) {
+    case "easy": return "Facile";
+    case "medium": return "Moyen";
+    case "hard": return "Difficile";
+  
+    default:
+      break;
+  }
+}

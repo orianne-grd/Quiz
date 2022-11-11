@@ -1,19 +1,21 @@
 // import { list } from "../data/data";
+import { useState } from "react";
 import { useParams } from "react-router-dom";
-import { getQuestionListJson, setList } from "../util/questionListUtil";
+import { getQuestionListJson, setList, passed, active, disable } from "../util/questionListUtil";
 import { getScore } from "../util/scoreUtil";
 import { getListByLevel } from "../util/listUtil";
-import { setLevel } from "../util/levelUtil";
+import { getLevel, setLevel, getLevelTxt } from "../util/levelUtil";
 
 
 export const ListQuestion = () => {
+
+  // const [loaded, setLoading] = useState(false); // Loading state
+
   let params = useParams();
   let level = params.level;
   setLevel(level);
 
   let list = getListByLevel(level);
-
-  let score = getScore();
 
   /**
    * Retourne la liste de question du quiz
@@ -30,27 +32,57 @@ export const ListQuestion = () => {
     }
 
     for (let question of listQuestion) {
-      question.check ?
-        content.push(<p className="col-8 btn btn-outline-secondary check">
-          <a href={"/question/" + question.key}>Question {question.key}</a>
-        </p>)
-        :
-        content.push(<p className="col-8 btn btn-outline-secondary disable-links">
-          <a href={"/question/" + question.key}>Question {question.key}</a>
-        </p>)
+
+      switch (question.state) {
+        case passed:
+          content.push(<p className="col-8 btn btn-outline-secondary passed">
+            <a href={"/question/" + question.key}>Question {question.key}</a>
+          </p>)
+          break;
+        case active:
+          content.push(<p className="col-8 btn btn-outline-secondary active">
+            <a href={"/question/" + question.key}>Question {question.key}</a>
+          </p>)
+          break;
+        case disable:
+          content.push(<p className="col-8 btn btn-outline-secondary disable-links">
+            <a href={"/question/" + question.key}>Question {question.key}</a>
+          </p>)
+          break;
+        default:
+          break;
+      }
     }
 
-    return content
+    // setLoading(true);
+    return content;
+  }
+
+
+  function showScore() {
+    if (getScore()) {
+      return (<p className="score">Score : {getScore()}</p>);
+    }
+  }
+
+  function showLevel() {
+    let level = getLevel();
+    if(level) {
+      return (<h3 className={level}> {getLevelTxt(level)} </h3>)
+    }
   }
 
   /**
    * Retourne l'affichage du composant
    */
+
   return (
     <div className="list-questions">
       <h1>Liste des questions</h1>
-      <p className="score">Score : {score}</p>
+      {showLevel()}
+      {showScore()}
       {getQuestions(list)}
     </div>
   );
+
 }
