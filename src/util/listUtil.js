@@ -2,6 +2,9 @@ import { easy } from "../data/easy"
 import { medium } from "../data/medium";
 import { hard } from "../data/hard";
 import { getLevel } from "./levelUtil";
+import { setList } from "./questionListUtil";
+
+const level = ["easy", "medium", "hard"];
 
 export function findByIdList(list, key) {
   return list.find(o => o.key === key);
@@ -17,7 +20,12 @@ export function getListByLevel(level) {
     case "easy": return easy;
     case "medium": return medium;
     case "hard": return hard;
-
     default: break;
   }
+}
+
+export function initList() {
+  level.forEach(elem => {
+    setList(getListByLevel(elem), elem)
+  });
 }
