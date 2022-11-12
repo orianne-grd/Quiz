@@ -157,31 +157,22 @@ img {
     font-size: large;
   }
 
-  p.passed {
+  .passed {
     background-color: $light-blue;
-
-    a {
-      color: white;
-      text-decoration: none;
-    }
+    color: white;
+    text-decoration: none;
   }
 
   .active {
     background-color: $dark-blue;
-
-    a {
-      color: white;
-      text-decoration: none;
-    }
+    color: white;
+    text-decoration: none;
+    
   }
 
-  .disable-links {
-    pointer-events: none;
-
-    a {
-      color: grey;
-      text-decoration: none;
-    }
+  .btn-list {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
   }
 }
 

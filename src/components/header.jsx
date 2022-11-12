@@ -9,10 +9,10 @@ export const Header = () => {
         <button className="btn btn-outline-secondary" onClick={() => navigate(-1)}>Back</button>
       </div>
       <div className="col-3">
-        <button className="btn btn-outline-secondary"><a href="/">Home</a></button>
+        <a className="btn btn-outline-secondary" type="button" href="/">Home</a>
       </div>
       <div className="col-3">
-        <button className="btn btn-outline-secondary"><a href={"/level"}>Level</a></button>
+        <a className="btn btn-outline-secondary" type="button" href={"/level"}>Level</a>
       </div>
     </div>
   );

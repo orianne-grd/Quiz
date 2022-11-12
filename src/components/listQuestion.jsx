@@ -1,5 +1,3 @@
-// import { list } from "../data/data";
-import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { getQuestionListJson, setList, passed, active, disable } from "../util/questionListUtil";
 import { getScore } from "../util/scoreUtil";
@@ -8,8 +6,6 @@ import { getLevel, setLevel, getLevelTxt } from "../util/levelUtil";
 
 
 export const ListQuestion = () => {
-
-  // const [loaded, setLoading] = useState(false); // Loading state
 
   let params = useParams();
   let level = params.level;
@@ -35,26 +31,23 @@ export const ListQuestion = () => {
 
       switch (question.state) {
         case passed:
-          content.push(<p className="col-8 btn btn-outline-secondary passed">
-            <a href={"/question/" + question.key}>Question {question.key}</a>
-          </p>)
+          content.push(
+            <a key={level + "-" + question.key} className="col-8 btn btn-outline-secondary btn-list passed" type="button" href={"/question/" + question.key}>Question {question.key}</a>
+          )
           break;
         case active:
-          content.push(<p className="col-8 btn btn-outline-secondary active">
-            <a href={"/question/" + question.key}>Question {question.key}</a>
-          </p>)
+          content.push(
+            <a key={level + "-" + question.key} className="col-8 btn btn-outline-secondary btn-list active" type="button" href={"/question/" + question.key}>Question {question.key}</a>)
           break;
         case disable:
-          content.push(<p className="col-8 btn btn-outline-secondary disable-links">
-            <a href={"/question/" + question.key}>Question {question.key}</a>
-          </p>)
+          content.push(
+            <button key={level + "-" + question.key} className="col-8 btn btn-outline-secondary btn-list" disabled>Question {question.key}</button>)
           break;
         default:
           break;
       }
     }
 
-    // setLoading(true);
     return content;
   }
 
@@ -67,7 +60,7 @@ export const ListQuestion = () => {
 
   function showLevel() {
     let level = getLevel();
-    if(level) {
+    if (level) {
       return (<h3 className={level}> {getLevelTxt(level)} </h3>)
     }
   }

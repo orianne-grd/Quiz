@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { saveCheck, isCheck, isNextQuestionDisable } from '../util/questionListUtil';
 import { addPoint } from '../util/scoreUtil';
 import { findById } from '../util/listUtil';
+import { getLevel } from '../util/levelUtil';
 
 /**
  * La liste de réponses
@@ -14,16 +15,24 @@ export const Answers = (prop) => {
 
   const question = prop.question
 
+  let level = getLevel();
+
   /**
    * Retourne les boutons de réponses à la question
    */
   function getListResponses(question) {
     let content = [];
-    for (let r of question.responses) {
+    question.responses.forEach((r, index) => {
       content.push(
-        <button className="btn btn-secondary mt-3 col-10 btn-ans" onClick={() => checkAnswer(r, question)}>{r.res}</button>
+        <button
+          key={"ans-" + level + "-" + index}
+          className="btn btn-secondary mt-3 col-10 btn-ans"
+          onClick={() => checkAnswer(r, question)}>
+          {r.res}
+        </button>
       )
-    }
+    })
+
     return content;
   }
 
@@ -33,27 +42,37 @@ export const Answers = (prop) => {
    */
   function getListResponsesSuccess(question) {
     let content = [];
-    for (let r of question.responses) {
+    question.responses.forEach((r, index) => {
       if (r.valid) {
         content.push(
-          <button className="btn btn-success mt-3 col-10 btn-ans" disabled>{r.res}</button>
+          <button
+            key={"suc-" + level + "-" + index}
+            className="btn btn-success mt-3 col-10 btn-ans"
+            disabled>
+            {r.res}
+          </button>
         )
       } else {
         content.push(
-          <button className="btn btn-secondary mt-3 col-10 btn-ans" disabled>{r.res}</button>
+          <button
+            key={"suc-" + level + "-" + index}
+            className="btn btn-secondary mt-3 col-10 btn-ans"
+            disabled>
+            {r.res}
+          </button>
         )
       }
 
-    }
+    })
 
     content.push(
       <p className='mt-4 result success-msg'> Bien joué ! </p>
     )
 
     if (isQuestionInList(question.key + 1)) {
-      content.push(<button className='btn btn-outline-dark col-4 mt-3 btn-res'><a href={"/question/" + (question.key + 1)}> Suivant </a></button>)
+      content.push(<a className='btn btn-outline-dark col-4 mt-3 btn-res' type="button" href={"/question/" + (question.key + 1)}> Suivant </a>)
     } else {
-      content.push(<button className='btn btn-outline-dark col-4 mt-3 btn-res'><a href={"/level"}> Terminé </a></button>)
+      content.push(<a className='btn btn-outline-dark col-4 mt-3 btn-res' type="button" href={"/level"}> Terminé </a>)
     }
     return content;
   }
@@ -64,30 +83,44 @@ export const Answers = (prop) => {
    */
   function getListResponsesFail(question, response) {
     let content = [];
-    for (let r of question.responses) {
+    question.responses.forEach((r, index) => {
       if (r.res === response.res) {
         content.push(
-          <button className="btn btn-danger mt-3 col-10 btn-ans">{r.res}</button>
+          <button
+            key={"fail-" + level + "-" + index}
+            className="btn btn-danger mt-3 col-10 btn-ans">
+            {r.res}
+          </button>
         )
       } else if (r.valid) {
         content.push(
-          <button className="btn btn-success mt-3 col-10 btn-ans" disabled>{r.res}</button>
+          <button
+            key={"fail-" + level + "-" + index}
+            className="btn btn-success mt-3 col-10 btn-ans"
+            disabled>
+            {r.res}
+          </button>
         )
       } else {
         content.push(
-          <button className="btn btn-secondary mt-3 col-10 btn-ans" disabled>{r.res}</button>
+          <button
+            key={"fail-" + level + "-" + index}
+            className="btn btn-secondary mt-3 col-10 btn-ans"
+            disabled>
+            {r.res}
+          </button>
         )
       }
-    }
+    })
 
     content.push(
       <p className='mt-4 result error-msg '> Dommage ! </p>
     )
 
     if (isQuestionInList(question.key + 1)) {
-      content.push(<button className='btn btn-outline-dark col-4 mt-3 btn-res'><a href={"/question/" + (question.key + 1)}> Suivant </a></button>)
+      content.push(<a className='btn btn-outline-dark col-4 mt-3 btn-res' type="button" href={"/question/" + (question.key + 1)}> Suivant </a>)
     } else {
-      content.push(<button className='btn btn-outline-dark col-4 mt-3 btn-res'><a href={"/level"}> Terminé </a></button>)
+      content.push(<a className='btn btn-outline-dark col-4 mt-3 btn-res' type="button" href={"/level"}> Terminé </a>)
     }
     return content;
   }
