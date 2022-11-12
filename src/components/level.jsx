@@ -30,7 +30,7 @@ export const Level = () => {
       {showScore()}
       <a href="/easy" className="btn btn-secondary btn-lg col-8 mt-3 easy-btn" type="button">Facile</a>
       <a href="/medium" className={"btn btn-secondary btn-lg col-8 mt-3 medium-btn " + getAccess(40)} type="button">Moyen</a>
-      <a href="/hard" className={"btn btn-secondary btn-lg col-8 mt-3 hard-btn " + getAccess(80)} type="button">Difficile</a>
+      <a href="/hard" className={"btn btn-secondary btn-lg col-8 mt-3 hard-btn " + getAccess(90)} type="button">Difficile</a>
       <button className="btn btn-outline-dark btn-lg col-8 mt-5" type="button" onClick={() => reset()}>Rejouer</button>
     </div>
   )

@@ -2,7 +2,7 @@ import { easy } from "../data/easy"
 import { medium } from "../data/medium";
 import { hard } from "../data/hard";
 import { getLevel } from "./levelUtil";
-import { setList } from "./questionListUtil";
+import { setList, getQuestionListJson } from "./questionListUtil";
 
 const level = ["easy", "medium", "hard"];
 
@@ -25,7 +25,7 @@ export function getListByLevel(level) {
 }
 
 export function initList() {
-  level.forEach(elem => {
-    setList(getListByLevel(elem), elem)
+  level.forEach(lvl => {
+    if(getQuestionListJson(lvl) === null) setList(getListByLevel(lvl), lvl)
   });
 }
